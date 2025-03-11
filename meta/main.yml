@@ -1,5 +1,5 @@
 galaxy_info:
-  role_name: MySQL
+  role_name: database-server
   author: lexwuestenenk
   description: MySQL installation role
   license: MIT
