@@ -1,0 +1,10 @@
+galaxy_info:
+  author: Lex Wuestenenk
+  description: An Ansible role for installing and configuring MySQL.
+  license: MIT
+  platforms:
+    - name: Ubuntu
+      versions:
+        - "24.04"
+
+  dependencies: []

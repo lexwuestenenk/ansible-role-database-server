@@ -3,6 +3,7 @@ mysql_user: "dbuser"
 mysql_password: "dbpassword"
 mysql_database: "appdb"
 
+# MySQL packages to be installed
 database_server_packages:
   - mysql-server
   - python3-pymysql
