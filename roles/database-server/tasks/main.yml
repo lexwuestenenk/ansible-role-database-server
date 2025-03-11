@@ -1,0 +1,40 @@
+---
+- name: Install DB Packages
+  ansible.builtin.apt:
+    name: "{{ database_server_packages }}"
+    state: present
+    update_cache: yes
+
+  notify: Start MySQL
+
+- name: Set MySQL root password
+  ansible.builtin.mysql_user:
+    name: root
+    password: "{{ mysql_root_password }}"
+    host: localhost
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    state: present
+  ignore_errors: yes
+
+- name: Create application database
+  ansible.builtin.mysql_db:
+    name: "{{ mysql_database }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Create MySQL user for app
+  ansible.builtin.mysql_user:
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    priv: "{{ mysql_database }}.*:ALL"
+    host: "%"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+
+- name: Ensure dbuser can authenticate with a password
+  ansible.builtin.command: >
+    mysql -uroot -p{{ mysql_root_password }} -e "ALTER USER '{{ mysql_user }}'@'%' IDENTIFIED WITH mysql_native_password BY '{{ mysql_password }}';"
+  changed_when: false
+  notify:  Restart MySQL

@@ -1,0 +1,7 @@
+---
+- name: Install Webserver Packages
+  ansible.builtin.apt:
+    name: "{{ webserver_packages }}"
+    state: present
+
+  notify: Start Apache
